@@ -5,6 +5,7 @@ import { AuthenticatedRequest } from '../middleware/authMiddleware';
 export const getVendorOrders = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const orders = await Order.find({ vendorId: req.user?.id }).populate('deliveryPartnerId customerId');
+    console.log('vendorId:', req.user?.id);
     res.status(200).json(orders);
   } catch (err) {
     console.error('Get Vendor Orders Error:', err);
