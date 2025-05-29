@@ -23,13 +23,19 @@ A full-stack web application that enables vendors to assign delivery partners, d
 ### Login page
 ![alt text](./client/public/screenShots/ss1.png)
 
+---
+
 ### Vendor order assignment
 ![alt text](./client/public/screenShots/ss2.png)
 ![alt text](./client/public/screenShots/ss3.png)
 
+---
+
 ### Delivery partner location sharing
 ![alt text](./client/public/screenShots/ss4.png)
 ![alt text](./client/public/screenShots/ss5.png)
+
+---
 
 ### Customer tracking map
 ![alt text](./client/public/screenShots/ss6.png)
