@@ -47,7 +47,7 @@ A full-stack web application that enables vendors to assign delivery partners, d
 
  
 ## 📂 Project Structure
-zip-zap/<br>
+Real-Time Location Tracker for Multivendor Delivery Platform/<br>
 ├── client/ # Frontend (Next.js) <br>
 │ ├── src/<br>
 │ │ ├── app/ # App router pages (login, dashboards)<br>
