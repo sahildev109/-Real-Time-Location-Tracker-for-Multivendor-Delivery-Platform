@@ -1,4 +1,4 @@
-// components/MapViewComponent.tsx
+
 'use client';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -7,7 +7,7 @@ import 'leaflet/dist/leaflet.css';
 
 const defaultPosition: [number, number] = [19.076, 72.8777];
 
-// Fix for Leaflet's default icon
+
 if (typeof window !== 'undefined') {
   delete (L.Icon.Default.prototype as any)._getIconUrl;
   L.Icon.Default.mergeOptions({
