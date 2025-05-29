@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
 interface Order {
@@ -16,6 +17,7 @@ interface DeliveryPartner {
 }
 
 export default function VendorDashboard() {
+  const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [deliveryPartners, setDeliveryPartners] = useState<DeliveryPartner[]>([]);
   const [selectedPartner, setSelectedPartner] = useState<string>('');
@@ -79,7 +81,15 @@ export default function VendorDashboard() {
   return (
     <ProtectedRoute allowedRoles={['vendor']}>
       <div className="p-8">
+        <div className='flex justify-between items-center mb-6'>
+
         <h1 className="text-2xl font-bold mb-4">Vendor Dashboard</h1>
+        <button className='font-bold bg-red-600 p-2 border-none rounded-lg hover:cursor-pointer' onClick={()=>{
+          localStorage.clear();
+router.push('/login');
+
+        }}>Log out</button>
+        </div>
 
         {loading ? (
           <p>Loading orders...</p>

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import jwt_decode from 'jwt-decode';
+import { useRouter } from 'next/navigation';
 
 interface DecodedToken {
   id: string;
@@ -20,6 +21,7 @@ interface Order {
 }
 
 export default function DeliveryDashboard() {
+  const router = useRouter();
   const [order, setOrder] = useState<Order | null>(null);
   const [deliveryPartnerId, setDeliveryPartnerId] = useState<string | null>(null);
   const [isSharing, setIsSharing] = useState(false);
@@ -87,7 +89,7 @@ export default function DeliveryDashboard() {
     };
 
     emitLocation();
-    intervalRef.current = setInterval(emitLocation, 5000);
+    intervalRef.current = setInterval(emitLocation, 3000);
 
     socket.on('disconnect', () => {
       clearInterval(intervalRef.current!);
@@ -111,14 +113,46 @@ useEffect(() => {
 }, [order, deliveryPartnerId]);
 
 const handleDelivered = async () => {
+  if (!order) return;
 
-}
+  try {
+    const res = await fetch('http://localhost:5000/api/delivery/mark-delivered', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ orderId: order._id }),
+    });
+
+    const data = await res.json();
+    if (res.ok) {
+      alert('Order marked as delivered');
+      clearInterval(intervalRef.current!);
+      socketRef.current?.disconnect();
+      setIsSharing(false);
+      localStorage.removeItem('isSharingLocation');
+      setOrder(null); // Clear UI
+    } else {
+      alert(data.message || 'Failed to mark as delivered');
+    }
+  } catch (err) {
+    console.error('Delivery error:', err);
+  }
+};
+
 
   return (
     <ProtectedRoute allowedRoles={['delivery']}>
       <div className="p-8">
+        <div className='flex justify-between items-center mb-6'>
         <h1 className="text-2xl font-bold mb-4">Delivery Dashboard</h1>
+        <button className='font-bold bg-red-600 p-2 border-none rounded-lg hover:cursor-pointer' onClick={()=>{
+          localStorage.clear();
+router.push('/login');
 
+        }}>Log out</button>
+</div>
         {!order ? (
           <p className="text-gray-600">No assigned orders.</p>
         ) : (
@@ -135,12 +169,7 @@ const handleDelivered = async () => {
             </button>
             {isSharing && (
               <button
-                onClick={() => {
-                  if (intervalRef.current) clearInterval(intervalRef.current);
-                  if (socketRef.current) socketRef.current.disconnect();
-                  setIsSharing(false);
-                  localStorage.removeItem('isSharingLocation');
-                }}
+                onClick={handleDelivered}
                 className="ml-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
               >
                 Delivered

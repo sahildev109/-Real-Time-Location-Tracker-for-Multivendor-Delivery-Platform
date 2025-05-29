@@ -12,9 +12,9 @@ router.get(
   async (req: AuthenticatedRequest, res): Promise<void> => {
     try {
       const order = await Order.find({
-        customerId: req.user?.id,
-        // status: { $in: ['assigned', 'pending'] }, // only active orders
-      }).populate('deliveryPartnerId vendorId');
+        customerId: req.user?.id
+       
+      }).populate('deliveryPartnerId vendorId status');
 
       if (!order) {
          res.status(404).json({ message: 'No order found' });

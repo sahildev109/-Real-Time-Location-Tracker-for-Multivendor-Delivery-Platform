@@ -2,7 +2,7 @@
 
 
 import { useEffect, useState } from 'react';
-
+import {useRouter} from 'next/navigation';
 import { io } from 'socket.io-client';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import dynamic from 'next/dynamic';
@@ -30,9 +30,8 @@ export default function CustomerDashboard() {
 const [orders, setOrders] = useState<Order[]>([]);
 const [loading, setLoading] = useState(true);
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
-  
-
-     useEffect(() => {
+  const router = useRouter()
+      useEffect(() => {
       setLoading(true);
     const fetchOrder = async () => {
       const res = await fetch('http://localhost:5000/api/customer/customer-order', {
@@ -67,7 +66,14 @@ console.log('Orders:', orders);
   return (
     <ProtectedRoute allowedRoles={['customer']}>
       <div className="p-6">
+        <div className='flex justify-between items-center mb-6'>
         <h1 className="text-2xl font-bold mb-4">Track Your Order</h1>
+        <button className='font-bold bg-red-600 p-2 border-none rounded-lg hover:cursor-pointer' onClick={()=>{
+          localStorage.clear();
+router.push('/login');
+
+        }}>Log out</button>
+        </div>
 
 <MapView location={location} />
 
