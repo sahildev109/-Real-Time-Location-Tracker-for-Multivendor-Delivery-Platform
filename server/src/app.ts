@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import connectDB from './config/db';
 import authRoutes from './routes/authRoutes';
 import vendorRoutes from './routes/vendorRoutes';
+import customerRoutes from './routes/customerRoutes';
 import deliveryRoutes from './routes/deliveryRoutes';
 
 
@@ -19,5 +20,6 @@ connectDB();
 app.use('/api', authRoutes);
 app.use('/api/vendor', vendorRoutes);
 app.use('/api/delivery', deliveryRoutes);
+app.use('/api/customer', customerRoutes);
 
 export default app;

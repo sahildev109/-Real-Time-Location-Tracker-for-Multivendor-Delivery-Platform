@@ -14,6 +14,7 @@ export default function AuthForm() {
 
    const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     const endpoint = isLogin ? 'http://localhost:5000/api/login' : 'http://localhost:5000/api/signup';
 
     try {
